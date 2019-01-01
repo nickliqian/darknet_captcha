@@ -1,0 +1,28 @@
+<annotation>
+	<folder>{{ folder_name }}</folder>
+	<filename>{{ img_name }}</filename>
+	<path>{{ img_path }}</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>320</width>
+		<height>160</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	{% for w in words %}
+	<object>
+		<name>word</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>{{ w.xmin }}</xmin>
+			<ymin>{{ w.ymin }}</ymin>
+			<xmax>{{ w.xmax }}</xmax>
+			<ymax>{{ w.ymax }}</ymax>
+		</bndbox>
+	</object>
+    {% endfor %}
+</annotation>
