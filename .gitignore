@@ -105,3 +105,9 @@ venv.bak/
 
 # pycharm
 .idea/
+
+darknet/
+app/
+
+text.jpg
+crop_test

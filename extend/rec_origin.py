@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 from ctypes import *
-import math
 import random
 import time
 import math

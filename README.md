@@ -51,7 +51,7 @@ pip install -r requirement.txt
 ```
 确保你的系统上已经安装了tk：
 ```
-sudo apt-get install python-tk
+sudo apt-get install python3-tk
 ```
 ## 2.4 生成基本配置
 进入根目录：  
@@ -83,7 +83,7 @@ python3 extend/output_label.py my_captcha
 ```
 wget https://pjreddie.com/media/files/darknet53.conv.74
 ```
-在根目录下，执行下面的命令开始训练：
+在根目录下，执行下面的命令开始训练：  
 ```
 ./darknet/darknet detector train app/my_captcha/my_captcha.data app/my_captcha/my_captcha_train.yolov3.cfg darknet53.conv.74
 ```
@@ -102,6 +102,8 @@ python3 extend/rec.py app/my_captcha/images_data/JPEGImages/0_15463317589942513.
 ![img1](readme_file/text_800.jpg)  
 迭代1000次：
 ![img1](readme_file/text_1000.jpg)  
+迭代1200次：
+![img1](readme_file/text_1200.jpg)  
 
 ## 3 使用阿里云OSS上传图片
 ```
@@ -110,10 +112,14 @@ python3 upload.py text.jpg
 ```
 
 ## GPU云推荐
-使用租用 vectordash GPU云主机，ssh连接集成了Nvidia深度学习环境的ubuntu16.04系统；    
-vectordash提供了一个客户端，具备远程连接、上传和下载文件、管理多个云主机等。  
+使用租用 vectordash GPU云主机，ssh连接集成了Nvidia深度学习环境的ubuntu16.04系统  
+包含以下工具或框架：  
+```
+CUDA 9.0, cuDNN, Tensorflow, PyTorch, Caffe, Keras
+```  
+vectordash提供了一个客户端，具备远程连接、上传和下载文件、管理多个云主机等。    
 下面是几种显卡的租用价格：  
-![img1](readme_file/vectordash.png)
+![img1](readme_file/vectordash.png)  
 创建实例后，面板会提供一个秘钥，输入秘钥后，就可以使用客户端操作了：  
 ```
 # 安装客户端
@@ -131,10 +137,15 @@ vectordash push <instance_id> <from_path> <to_path>
 # 下载文件
 vectordash pull <instance_id> <from_path> <to_path>
 ```
-由于vectordash主机在国外，所以上传和下载都很慢，建议临时租用一台阿里云竞价突发型实例（约7分钱一小时）作为中转使用。
+由于vectordash主机在国外，所以上传和下载都很慢，建议临时租用一台阿里云竞价突发型实例（约7分钱一小时）作为中转使用。  
 
 ## 报错解决办法
-1. UnicodeEncodeError: 'ascii' codec can't encode character '\U0001f621' in posit
-[参考链接](https://blog.csdn.net/u011415481/article/details/80794567)
-2. pip install, locale.Error: unsupported locale setting
-[参考链接](https://blog.csdn.net/qq_33232071/article/details/51108062)
+1. UnicodeEncodeError: 'ascii' codec can't encode character '\U0001f621' in posit  
+[参考链接](https://blog.csdn.net/u011415481/article/details/80794567)  
+2. pip install, locale.Error: unsupported locale setting  
+[参考链接](https://blog.csdn.net/qq_33232071/article/details/51108062)  
+
+## TODO
+1. 支持多类别检测的识别和训练
+2. api调用
+3. 分类器
