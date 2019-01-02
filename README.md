@@ -20,6 +20,10 @@ darknet实际上给我们提供了一系列的深度学习算法，我们要做�
 git clone darknet_captcha
 ```
 ## 2.2 编译darknet
+下载darknet项目，覆盖darknet目录：  
+```
+git clone https://github.com/pjreddie/darknet.git
+```
 进入`darknet`目录，修改`darknet/Makefile`配置文件  
 ```
 cd darknet
@@ -38,11 +42,7 @@ DEBUG=0
 ```
 make
 ```
-如果你想使用新的版本，可以克隆一份darknet并替换掉darknet目录，然后重复上面的步骤即可。  
-```
-git clone https://github.com/pjreddie/darknet.git
-```
->以上是官方推荐的方式。有的同学在编译过程中会出错，这时可以直接在GitHub中使用http协议下载最新版本。
+>如果在编译过程中会出错，可以在darknet的issue找一下解决办法，也可以发邮件找我要旧版本的darknet。
 
 ## 2.3 安装python3环境
 使用pip执行下面的语句：  
@@ -96,12 +96,45 @@ wget https://pjreddie.com/media/files/darknet53.conv.74
 python3 extend/rec.py app/my_captcha/images_data/JPEGImages/0_15463317589942513.jpg app/my_captcha/my_captcha_train.yolov3.cfg app/my_captcha/backup/my_captcha_train.backup app/my_captcha/my_captcha.data
 ```
 可以看到1000次的时候效果还不错  
-![img1](readme_file/text_300.jpg)
-![img1](readme_file/text_800.jpg)
-![img1](readme_file/text_1000.jpg)
+迭代300次：
+![img1](readme_file/text_300.jpg)  
+迭代800次：
+![img1](readme_file/text_800.jpg)  
+迭代1000次：
+![img1](readme_file/text_1000.jpg)  
 
 ## 3 使用阿里云OSS上传图片
 ```
 python3 upload.py app/my_captcha/images_data/JPEGImages/1_15463317590530567.jpg
 python3 upload.py text.jpg
 ```
+
+## GPU云推荐
+使用租用 vectordash GPU云主机，ssh连接集成了Nvidia深度学习环境的ubuntu16.04系统；    
+vectordash提供了一个客户端，具备远程连接、上传和下载文件、管理多个云主机等。  
+下面是几种显卡的租用价格：  
+![img1](readme_file/vectordash.png)
+创建实例后，面板会提供一个秘钥，输入秘钥后，就可以使用客户端操作了：  
+```
+# 安装客户端
+pip install vectordash --upgrade
+# 登录
+vectordash login
+# 列出主机
+vectordash list
+# ssh登录
+vectordash ssh <instance_id>
+# 打开jupyter
+vectordash jupyter <instance_id>
+# 上传文件
+vectordash push <instance_id> <from_path> <to_path>
+# 下载文件
+vectordash pull <instance_id> <from_path> <to_path>
+```
+由于vectordash主机在国外，所以上传和下载都很慢，建议临时租用一台阿里云竞价突发型实例（约7分钱一小时）作为中转使用。
+
+## 报错解决办法
+1. UnicodeEncodeError: 'ascii' codec can't encode character '\U0001f621' in posit
+[参考链接](https://blog.csdn.net/u011415481/article/details/80794567)
+2. pip install, locale.Error: unsupported locale setting
+[参考链接](https://blog.csdn.net/qq_33232071/article/details/51108062)

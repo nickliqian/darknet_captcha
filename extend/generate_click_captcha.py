@@ -2,6 +2,10 @@
 # -*- coding: UTF-8 -*-
 from click_captcha import ClickCaptcha
 import fire
+import sys
+import codecs
+sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+sys.stdout.write("Your content....")
 
 
 def main(app_name, font_path="C:/windows/fonts/simkai.ttf", word_list_file_path="extend/chinese_word.json", count=300):

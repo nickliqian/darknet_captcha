@@ -28,10 +28,9 @@ def render(template_path, save_path, cfg):
 
 def create_path(path):
     if not os.path.exists(path):
-        try:
-            os.makedirs(path)
-        except FileExistsError:
-            pass
+        os.makedirs(path)
+    else:
+        pass
 
 
 def main(app_name):
