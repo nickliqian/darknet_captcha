@@ -25,4 +25,18 @@
 		</bndbox>
 	</object>
     {% endfor %}
+	{% for w in dummy_words %}
+	<object>
+		<name>dummy</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>{{ w.xmin }}</xmin>
+			<ymin>{{ w.ymin }}</ymin>
+			<xmax>{{ w.xmax }}</xmax>
+			<ymax>{{ w.ymax }}</ymax>
+		</bndbox>
+	</object>
+    {% endfor %}
 </annotation>

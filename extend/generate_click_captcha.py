@@ -8,12 +8,15 @@ sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 sys.stdout.write("Your content....")
 
 
-def main(app_name, font_path="C:/windows/fonts/simkai.ttf", word_list_file_path="extend/chinese_word.json", count=300):
+def main(app_name, font_path="msyh.ttf", word_list_file_path="extend/chinese_word.json", count=500):
     # 创建对象
-    c = ClickCaptcha(font_path=font_path, word_list_file_path=word_list_file_path)
+    # 创建对象
+    c = ClickCaptcha()
+    c.font_settings(word_size=32, font_path=font_path, word_list_file_path=word_list_file_path)
 
     # 配置开关
     c.enable_add_text = True  # 添加文字
+    c.enable_dummy_word = True  # 添加虚构文字对象
 
     # 批量保存
     c.template_path = "extend/exp.xml"
