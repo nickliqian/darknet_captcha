@@ -10,7 +10,7 @@ def main(image_path, config_file, model_file, data_config_file):
         model_file=model_file,
         data_config_file=data_config_file
     )
-    dr.show_and_save(image_path)
+    dr.save(image_path)
 
 
 if __name__ == '__main__':

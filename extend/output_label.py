@@ -48,8 +48,8 @@ def create_path(path):
             pass
 
 
-def main(app_name):
-    classes = ["word"]
+def main(app_name, type_names):
+    classes = type_names
     source_folder = "app/{}/images_data".format(app_name)
     labels_folder = "app/{}/labels_data".format(app_name)
     create_path('{}/labels'.format(labels_folder))
