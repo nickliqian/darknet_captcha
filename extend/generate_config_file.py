@@ -33,14 +33,17 @@ def create_path(path):
         pass
 
 
-def main(app_name):
+def main(app_name, type_names="word"):
     """
     根据模板生成配置文件
-    :param app_name:
+    :param app_name:应用名称
+    :param type_names:分类名称，多分类使用逗号隔开
     :return:
     """
     # base_dir = os.getcwd()
     # app_dir = os.path.join(base_dir, "app/{}".format(app_name))
+
+    print("app: {}, types: {}".format(app_name, type_names))
 
     app_dir = "app/{}".format(app_name)
     create_path(app_dir)
@@ -69,7 +72,8 @@ def main(app_name):
 
     # 分类模型配置文件======
     detector_names_cfg = edict()
-    detector_names_cfg.name = "word"
+    # like ["word", "dummy"] or ["word"]
+    detector_names_cfg.names = type_names
     render('extend/config_template/app_name.names.tmp', os.path.join(app_dir, '{}.names'.format(app_name)), detector_names_cfg)
 
     # 依赖数据配置文件======

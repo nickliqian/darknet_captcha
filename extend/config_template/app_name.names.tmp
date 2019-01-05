@@ -1,1 +1,1 @@
-{{ name }}
+{% for name in names %}{{ name + "\n" }}{% endfor %}

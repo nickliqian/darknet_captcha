@@ -8,7 +8,7 @@ sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 sys.stdout.write("Your content....")
 
 
-def main(app_name, font_path="msyh.ttf", word_list_file_path="extend/chinese_word.json", count=500):
+def main(app_name, font_path="extend/msyh.ttf", word_list_file_path="extend/chinese_word.json", count=300, enable_dummy_word=False):
     # 创建对象
     # 创建对象
     c = ClickCaptcha()
@@ -16,7 +16,7 @@ def main(app_name, font_path="msyh.ttf", word_list_file_path="extend/chinese_wor
 
     # 配置开关
     c.enable_add_text = True  # 添加文字
-    c.enable_dummy_word = True  # 添加虚构文字对象
+    c.enable_dummy_word = enable_dummy_word  # 添加虚构文字对象
 
     # 批量保存
     c.template_path = "extend/exp.xml"
