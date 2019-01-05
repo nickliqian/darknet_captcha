@@ -49,7 +49,12 @@ def create_path(path):
 
 
 def main(app_name, type_names):
-    classes = type_names
+    # like ["word", "dummy"] or ["word"]
+    if isinstance(type_names, tuple):
+        classes = type_names
+    elif isinstance(type_names, str):
+        classes = (type_names,)
+
     source_folder = "app/{}/images_data".format(app_name)
     labels_folder = "app/{}/labels_data".format(app_name)
     create_path('{}/labels'.format(labels_folder))

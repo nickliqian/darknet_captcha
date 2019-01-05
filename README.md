@@ -4,6 +4,7 @@
 1. 提供两个目标检测（单分类和多分类）的例子，你可以通过例子熟悉定位yolo定位网络的使用方式
 2. 提供一系列API，用于使用自己的数据进行目标检测模型的训练
 
+![word](readme_file/word.jpg)
 
 
 # 1. 项目结构
@@ -65,7 +66,7 @@ cd darknet_captcha
 ```
 运行下面的程序生成一个应用的基本配置，如果你对darknet相关配置有一定的了解，可以直接打开文件修改参数的值，这里我们保持原样即可。  
 ```
-python3 extend/generate_config_file.py my_captcha
+python3 extend/generate_config_file.py my_captcha word
 ```
 my_captcha可以换成其他的名称，
 
@@ -80,7 +81,7 @@ python3 extend/generate_click_captcha.py  my_captcha extend/msyh.ttf extend/chin
 # 2.6 划分训练集和验证集
 划分训练集和验证集，同时对标签的值进行转换：  
 ```
-python3 extend/output_label.py my_captcha
+python3 extend/output_label.py my_captcha word
 ```
 
 # 2.7 开始训练
@@ -118,8 +119,8 @@ python3 extend/generate_config_file.py dummy_captcha word,dummy
 # 生成图片
 python3 extend/generate_click_captcha.py dummy_captcha extend/msyh.ttf extend/chinese_word.json 500 True
 # 输出标签到txt
-python3 extend/output_label.py dummy_captcha
-# 开始训练
+python3 extend/output_label.py dummy_captcha word,dummy
+# 开始训练w
 ./darknet/darknet detector train app/dummy_captcha/dummy_captcha.data app/dummy_captcha/dummy_captcha_train.yolov3.cfg darknet53.conv.74
 # 识别测试
 python3 extend/rec.py app/dummy_captcha/images_data/JPEGImages/0_15463317589942513.jpg app/dummy_captcha/dummy_captcha_train.yolov3.cfg app/dummy_captcha/backup/dummy_captcha_train.backup app/dummy_captcha/dummy_captcha.data
