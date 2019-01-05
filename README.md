@@ -105,7 +105,23 @@ python3 extend/rec.py app/my_captcha/images_data/JPEGImages/0_15463317589942513.
 迭代1200次：
 ![img1](readme_file/text_1200.jpg)  
 
-## 3 使用阿里云OSS上传图片
+
+## 3. 第二个例子：多类型目标检测
+```
+# 生成配置文件
+python3 extend/generate_config_file.py dummy_captcha word,dummy
+# 生成图片
+python3 extend/generate_click_captcha.py dummy_captcha extend/msyh.ttf extend/chinese_word.json 500 True
+# 输出标签到txt
+python3 extend/output_label.py dummy_captcha
+# 开始训练
+./darknet/darknet detector train app/dummy_captcha/dummy_captcha.data app/dummy_captcha/dummy_captcha_train.yolov3.cfg darknet53.conv.74
+# 识别测试
+python3 extend/rec.py app/dummy_captcha/images_data/JPEGImages/0_15463317589942513.jpg app/dummy_captcha/dummy_captcha_train.yolov3.cfg app/dummy_captcha/backup/dummy_captcha_train.backup app/dummy_captcha/dummy_captcha.data
+```
+
+
+## 4. 使用阿里云OSS上传图片
 ```
 python3 upload.py app/my_captcha/images_data/JPEGImages/1_15463317590530567.jpg
 python3 upload.py text.jpg
