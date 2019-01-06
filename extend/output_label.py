@@ -49,6 +49,11 @@ def create_path(path):
 
 
 def main(app_name):
+    """
+    计算坐标标签
+    :param app_name: str 应用名称
+    :return:
+    """
     classes = list()
     names_cfg_file = "app/{}/{}.names".format(app_name, app_name)
     with open(names_cfg_file, "r") as f:

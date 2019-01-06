@@ -175,3 +175,15 @@ vectordash pull <instance_id> <from_path> <to_path>
 1. 支持多类别检测的识别和训练
 2. api调用
 3. 分类器
+
+## CPU和GPU识别速度
+GTX 1060
+```
+[load model] speed time: 4.691879987716675s
+[detect image - i] speed time: 1.002530813217163s
+```
+CPU
+```
+[load model] speed time: 3.313053846359253s
+[detect image - i] speed time: 13.256595849990845s
+```
