@@ -48,12 +48,13 @@ def create_path(path):
             pass
 
 
-def main(app_name, type_names):
-    # like ["word", "dummy"] or ["word"]
-    if isinstance(type_names, tuple):
-        classes = type_names
-    elif isinstance(type_names, str):
-        classes = (type_names,)
+def main(app_name):
+    classes = list()
+    names_cfg_file = "app/{}/{}.names".format(app_name, app_name)
+    with open(names_cfg_file, "r") as f:
+        classes_text = f.readlines()
+    for text in classes_text:
+        classes.append(text.strip())
 
     source_folder = "app/{}/images_data".format(app_name)
     labels_folder = "app/{}/labels_data".format(app_name)

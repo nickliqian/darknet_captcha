@@ -8,14 +8,14 @@ sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 sys.stdout.write("Your content....")
 
 
-def main(app_name, font_path="extend/msyh.ttf", word_list_file_path="extend/chinese_word.json", count=300, enable_dummy_word=False):
+def main(app_name, count=300, enable_dummy_word=False, font_path="extend/msyh.ttf", word_list_file_path="extend/chinese_word.json"):
     """
-
+    生成验证码图片
+    :param count:文件数量
+    :param enable_dummy_word:是否生成虚拟干扰的文字
     :param app_name:应用名称
     :param font_path:字体路径
     :param word_list_file_path:字典映射文件路径
-    :param count:文件数量
-    :param enable_dummy_word:是否生成虚拟干扰的文字
     :return:None
     """
     # 创建对象
