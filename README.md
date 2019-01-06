@@ -1,31 +1,32 @@
 # darknet_captcha
-项目基于darknet开发了一系列的快速启动脚本，旨在使用图像识别的新手或者开发人员能够快速的搭建一个目标检测（定位）的项目。
+项目基于darknet开发了一系列的快速启动脚本，旨在让图像识别新手或者开发人员能够快速的启动一个目标检测（定位）的项目。
 本项目分为两个部分：
-1. 提供两个目标检测（单分类和多分类）的例子，你可以通过例子熟悉定位yolo定位网络的使用方式
-2. 提供一系列API，用于使用自己的数据进行目标检测模型的训练
+1. 提供两个目标检测（单分类和多分类）的例子，你可以通过例子熟悉定位yolo3定位网络的使用方式
+2. 基于darknet提供一系列API，用于使用自己的数据进行目标检测模型的训练
 
-![word](readme_file/word.jpg)
+![word](readme_file/word.jpg) ![word](readme_file/dummy_1300.jpg) ![word](readme_file/car.png)
 
 
 # 1. 项目结构
 项目分为三部分：darknet、extent、app
 1. darknet
-这部分没有作任何改动。
+这部分是[darknet](https://github.com/pjreddie/darknet)项目源码，没有作任何改动。
 2. extent
 扩展部分，新增了生成目标检测样本的程序、快速生成配置、识别demo和api程序。
 3. app
 每一个新的识别需求都以app区分，其中包含配置文件、样本和标签文件。
 
 # 2. 快速开始一个例子
-darknet实际上给我们提供了一系列的深度学习算法，我们要做的就是使用比较简单的步骤来调用darknet训练我们的识别模型。
-推荐使用的操作系统是`ubuntu`，遇到的坑会少很多。  
-如果使用windowns系统，需要先安装`cygwin`，参考我的博客：[如何在windowns上使用make等Unix系命令？教你安装cygwin](https://blog.csdn.net/weixin_39198406/article/details/83020632)
-下面的步骤都通过了`ubuntu16.04`测试。  
-## 2.1 下载项目
+darknet实际上给我们提供了一系列的深度学习算法，我们要做的就是使用比较简单的步骤来调用darknet训练我们的识别模型。  
+- 推荐使用的操作系统是`ubuntu`，遇到的坑会少很多。  
+- 如果使用windowns系统，需要先安装`cygwin`，便于编译darknet。（参考我的博客：[安装cygwin](https://blog.csdn.net/weixin_39198406/article/details/83020632)）  
+
+下面的步骤都已经通过`ubuntu16.04`测试。  
+#### 2-1 下载项目
 ```
-git clone darknet_captcha
+git clone https://github.com/nickliqian/darknet_captcha.git
 ```
-## 2.2 编译darknet
+#### 2-2 编译darknet
 下载darknet项目，覆盖darknet目录：  
 ```
 git clone https://github.com/pjreddie/darknet.git
@@ -35,8 +36,8 @@ git clone https://github.com/pjreddie/darknet.git
 cd darknet
 vim Makefile
 ```
-如果使用GPU这里GPU=1，如果使用CPU这里GPU=0，不建议使用CPU进行训练，因为使用CPU耗时会非常久。  
-如果你需要租用临时（且价格低）的GPU主机进行测试，可以点击这里，后面我会介绍一些推荐的服务。  
+- 如果使用GPU训练则下面的GPU=1  
+- 使用CPU训练则下面的GPU=0  
 ```
 GPU=1
 CUDNN=0
@@ -44,13 +45,15 @@ OPENCV=0
 OPENMP=0
 DEBUG=0
 ```
-然后就可以编译darknet：  
+不建议使用CPU进行训练，因为使用CPU不管是训练还是预测，耗时都非常久。  
+如果你需要租用临时且价格低的GPU主机进行测试，后面介绍了一些推荐的GPU云服务。  
+然后使用`make`编译`darknet`：  
 ```
 make
 ```
 >如果在编译过程中会出错，可以在darknet的issue找一下解决办法，也可以发邮件找我要旧版本的darknet。
 
-## 2.3 安装python3环境
+#### 2-3 安装python3环境
 使用pip执行下面的语句：  
 ```
 pip install -r requirement.txt
@@ -59,12 +62,13 @@ pip install -r requirement.txt
 ```
 sudo apt-get install python3-tk
 ```
-## 2.4 生成基本配置
+#### 2-4 根据模板生成基本配置
 进入根目录：  
 ```
 cd darknet_captcha
 ```
-运行下面的程序生成一个应用的基本配置，如果你对darknet相关配置有一定的了解，可以直接打开文件修改参数的值，这里我们保持原样即可。  
+运行下面的程序生成一个应用的基本配置：
+>如果你对darknet相关配置有一定的了解，可以直接打开文件修改参数的值，这里我们保持原样即可。  
 ```
 python3 extend/generate_config_file.py my_captcha word
 ```
