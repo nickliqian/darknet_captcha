@@ -10,15 +10,14 @@ sys.stdout.write("Your content....")
 
 def main(app_name, count=300, enable_dummy_word=False, font_path="extend/msyh.ttf", word_list_file_path="extend/chinese_word.json"):
     """
-    生成验证码图片
-    :param count:文件数量
-    :param enable_dummy_word:是否生成虚拟干扰的文字
-    :param app_name:应用名称
-    :param font_path:字体路径
-    :param word_list_file_path:字典映射文件路径
+    功能: 生成点选验证码图片
+    :param app_name: str <应用名称>
+    :param count: int <文件数量>: 默认是300
+    :param enable_dummy_word: str <是否生成虚拟干扰的文字>: 默认是False
+    :param font_path: str <字体路径>: 默认为 `extend/msyh.ttf`
+    :param word_list_file_path: str <字典映射文件路径>: 默认为 `extend/chinese_word.json`
     :return:None
     """
-    # 创建对象
     # 创建对象
     c = ClickCaptcha()
     c.font_settings(word_size=32, font_path=font_path, word_list_file_path=word_list_file_path)

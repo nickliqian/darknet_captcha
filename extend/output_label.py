@@ -50,8 +50,8 @@ def create_path(path):
 
 def main(app_name):
     """
-    计算坐标标签
-    :param app_name: str 应用名称
+    功能: 根据xml的文件计算yolo需要的标签：<x> <y> <width> <height>，并写入文件到指定app目录
+    :param app_name: str <应用名称>
     :return:
     """
     classes = list()
@@ -64,6 +64,7 @@ def main(app_name):
     source_folder = "app/{}/images_data".format(app_name)
     labels_folder = "app/{}/labels_data".format(app_name)
     create_path('{}/labels'.format(labels_folder))
+    print("Create x-y-w-h coordinate to {} from {}".format(labels_folder, source_folder))
 
     image_list = os.listdir("{}/JPEGImages".format(source_folder))
     total = len(image_list)
@@ -78,6 +79,7 @@ def main(app_name):
 
             list_file.write('{}/JPEGImages/{}.jpg\n'.format(source_folder, image_id))
             convert_annotation(image_id, source_folder, classes, labels_folder)
+    print("Create file {}".format('app/{}/{}_data_train.txt'.format(app_name, app_name)))
 
     # valid
     with open('app/{}/{}_data_valid.txt'.format(app_name, app_name), 'w', encoding="utf-8") as list_file:
@@ -86,6 +88,9 @@ def main(app_name):
 
             list_file.write('{}/JPEGImages/{}.jpg\n'.format(source_folder, image_id))
             convert_annotation(image_id, source_folder, classes, labels_folder)
+    print("Create file {}".format('app/{}/{}_data_valid.txt'.format(app_name, app_name)))
+
+    print("Generate x-y-w-h label success!")
 
 
 if __name__ == '__main__':
