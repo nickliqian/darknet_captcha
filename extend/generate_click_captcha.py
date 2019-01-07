@@ -32,6 +32,10 @@ def main(app_name, count=300, enable_dummy_word=False, font_path="extend/msyh.tt
     c.save_label_dir = "app/{}/images_data/Annotations".format(app_name)
     c.create_image_by_batch(count)
 
+    print("Template is from {}".format(c.template_path))
+    print("Generate {} images on {}".format(count, c.save_img_dir))
+    print("Generate {} .xml label files on {}".format(count, c.save_label_dir))
+
 
 if __name__ == '__main__':
     fire.Fire(main)

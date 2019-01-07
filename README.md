@@ -7,16 +7,26 @@
 ![word](readme_file/word.jpg) ![word](readme_file/dummy_1300.jpg) ![word](readme_file/car.png)
 
 
-# 1. 项目结构
-项目分为三部分：darknet、extent、app
-1. darknet
-这部分是[darknet](https://github.com/pjreddie/darknet)项目源码，没有作任何改动。
-2. extent
-扩展部分，新增了生成目标检测样本的程序、快速生成配置、识别demo和api程序。
-3. app
-每一个新的识别需求都以app区分，其中包含配置文件、样本和标签文件。
+# 目录
+1. 项目结构
+2. 开始一个例子：单类型目标检测
+3. 第二个例子：多类型目标检测
+4. 训练自己的数据
+5. API文档
+6. 其他问题  
+6.1 使用阿里云OSS加速下载  
+6.2 GPU云推荐  
+6.3 CPU和GPU识别速度对比  
+7. 报错解决办法
+8. TODO
 
-# 2. 快速开始一个例子
+# 1. 项目结构
+项目分为`darknet、extent、app`三部分  
+1. darknet: 这部分是[darknet](https://github.com/pjreddie/darknet)项目源码，没有作任何改动。
+2. extent: 扩展部分，包含**生成配置**、**生成样本**、**训练**、**识别demo**、**api程序**。
+3. app: 每一个新的识别需求都以app区分，其中包含配置文件、样本和标签文件等。
+
+# 2. 开始一个例子：单类型目标检测
 darknet实际上给我们提供了一系列的深度学习算法，我们要做的就是使用比较简单的步骤来调用darknet训练我们的识别模型。  
 - 推荐使用的操作系统是`ubuntu`，遇到的坑会少很多。  
 - 如果使用windowns系统，需要先安装`cygwin`，便于编译darknet。（参考我的博客：[安装cygwin](https://blog.csdn.net/weixin_39198406/article/details/83020632)）  
@@ -27,8 +37,9 @@ darknet实际上给我们提供了一系列的深度学习算法，我们要做�
 git clone https://github.com/nickliqian/darknet_captcha.git
 ```
 #### 2-2 编译darknet
-下载darknet项目，覆盖darknet目录：  
+进入`darknet_captcha`目录，下载`darknet`项目，覆盖`darknet`目录：  
 ```
+cd darknet_captcha
 git clone https://github.com/pjreddie/darknet.git
 ```
 进入`darknet`目录，修改`darknet/Makefile`配置文件  
@@ -45,67 +56,73 @@ OPENCV=0
 OPENMP=0
 DEBUG=0
 ```
-不建议使用CPU进行训练，因为使用CPU不管是训练还是预测，耗时都非常久。  
-如果你需要租用临时且价格低的GPU主机进行测试，后面介绍了一些推荐的GPU云服务。  
 然后使用`make`编译`darknet`：  
 ```
 make
 ```
+>不建议使用CPU进行训练，因为使用CPU不管是训练还是预测，耗时都非常久。  
+>如果你需要租用临时且价格低的GPU主机进行测试，后面介绍了一些推荐的GPU云服务。  
 >如果在编译过程中会出错，可以在darknet的issue找一下解决办法，也可以发邮件找我要旧版本的darknet。
 
 #### 2-3 安装python3环境
-使用pip执行下面的语句：  
+使用pip执行下面的语句，并确保你的系统上已经安装了tk：  
 ```
 pip install -r requirement.txt
-```
-确保你的系统上已经安装了tk：
-```
 sudo apt-get install python3-tk
 ```
-#### 2-4 根据模板生成基本配置
-进入根目录：  
+
+#### 2-4 创建一个应用
+进入根目录，运行下面的程序生成一个应用的基本配置：  
 ```
 cd darknet_captcha
+python3 extend/generate_config_file.py my_captcha 1
 ```
-运行下面的程序生成一个应用的基本配置：
+这里的类别默认生成`classes_1`，你可以修改类别名称；  
+打开`app/my_captcha/my_captcha.names`修改`classes_1`为主机想要的名称即可。
+
+如何查看`generate_config_file.py`的命令行参数解释？  
+直接运行`python generate_config_file.py`便可以在控制台查看，下面的程序也是如此。  
+
 >如果你对darknet相关配置有一定的了解，可以直接打开文件修改参数的值，这里我们保持原样即可。  
-```
-python3 extend/generate_config_file.py my_captcha word
-```
-my_captcha可以换成其他的名称，
 
-## 2.5 生成样本
+#### 2-5 生成样本
 生成样本使用另外一个项目 [nickliqian/generate_click_captcha](https://github.com/nickliqian/generate_click_captcha)  
-这里我已经集成进去了，分别指定应用名称、字体、验证码文字映射字典和生成数量，然后运行就可以生成指定数量的样本了：  
+这里我已经集成进去了，执行下面的命令生成样本和对应标签到指定应用中`yolo`规定的目录：  
 ```
-python3 extend/generate_click_captcha.py  my_captcha extend/msyh.ttf extend/chinese_word.json 300
+python3 extend/generate_click_captcha.py my_captcha
 ```
-生成的样本和标签文件都在应用目录下面的。  
+运行`python generate_click_captcha.py`查看参数解释。
 
-# 2.6 划分训练集和验证集
-划分训练集和验证集，同时对标签的值进行转换：  
+#### 2-6 划分训练集和验证集
+运行下面的程序，划分训练集和验证集，同时将标签的值转换为`yolo`认识的格式：  
 ```
-python3 extend/output_label.py my_captcha word
+python3 extend/output_label.py my_captcha 1
 ```
+这里填写的种类需要与上面一致。
+运行`python output_label.py`查看参数解释。
 
-# 2.7 开始训练
-到这里，我们要准备的东西还差一样，那就是darknet提供的预训练模型，使用下面的地址下载：  
+#### 2-7 开始训练
+到这里，我们要准备的东西还差一样，我们需要下载darknet提供的预训练模型放在`darknet_captcha`目录下：  
 ```
 wget https://pjreddie.com/media/files/darknet53.conv.74
 ```
-在根目录下，执行下面的命令开始训练：  
+在`darknet_captcha`目录下，执行下面的命令开始训练：  
 ```
 ./darknet/darknet detector train app/my_captcha/my_captcha.data app/my_captcha/my_captcha_train.yolov3.cfg darknet53.conv.74
 ```
 训练过程中模型会每一百次迭代储存一次，储存在`app/my_captcha/backup/`下，可以进行查看。  
-# 2.8 识别效果
-大概1.5小时，训练迭代到1000次，会有比较明显的效果，我们找一张验证集的图片进行识别测试：  
-![img1](readme_file/origin.jpg)
-这里的参数分别是：图片路径、网络配置路径、模型路径、数据配置路径：  
+
+#### 2-8 识别效果
+使用`GTX 1060`训练大概1.5小时，训练迭代到1000次，会有比较明显的效果。  
+
+![img1](readme_file/origin.jpg)  
+我们找一张验证集的图片使用不同进度下的模型进行识别测试，执行下面的语句开始识别：  
 ```
-python3 extend/rec.py app/my_captcha/images_data/JPEGImages/0_15463317589942513.jpg app/my_captcha/my_captcha_train.yolov3.cfg app/my_captcha/backup/my_captcha_train.backup app/my_captcha/my_captcha.data
+python3 extend/rec.py my_captcha 100
 ```
-可以看到1000次的时候效果还不错  
+这里的100是选择`app/my_captcha/images_data/JPEGImages`目录下的第一百张图片进行识别。  
+运行`python rec.py`查看参数解释。  
+  
 迭代300次：
 ![img1](readme_file/text_300.jpg)  
 迭代800次：
@@ -119,25 +136,41 @@ python3 extend/rec.py app/my_captcha/images_data/JPEGImages/0_15463317589942513.
 ## 3. 第二个例子：多类型目标检测
 ```
 # 生成配置文件
-python3 extend/generate_config_file.py dummy_captcha word,dummy
+python3 extend/generate_config_file.py dummy_captcha 2
 # 生成图片
-python3 extend/generate_click_captcha.py dummy_captcha extend/msyh.ttf extend/chinese_word.json 500 True
+python3 extend/generate_click_captcha.py dummy_captcha 500 True
 # 输出标签到txt
-python3 extend/output_label.py dummy_captcha word,dummy
+python3 extend/output_label.py dummy_captcha 2
 # 开始训练w
 ./darknet/darknet detector train app/dummy_captcha/dummy_captcha.data app/dummy_captcha/dummy_captcha_train.yolov3.cfg darknet53.conv.74
 # 识别测试
-python3 extend/rec.py app/dummy_captcha/images_data/JPEGImages/0_15463317589942513.jpg app/dummy_captcha/dummy_captcha_train.yolov3.cfg app/dummy_captcha/backup/dummy_captcha_train.backup app/dummy_captcha/dummy_captcha.data
+python3 extend/rec.py dummy_captcha 100
 ```
 
+## 4. 训练自己的数据
+暂缺
 
-## 4. 使用阿里云OSS上传图片
+## 5. API文档
+暂缺
+
+## 6. 其他问题
+### 6.1 使用阿里云OSS加速下载
+如果你使用国外云主机进行训练，训练好的模型的下载速度确实是一个问题。  
+这里推荐使用阿里云oss，在云主机上把文件上传上去，然后使用oss下载下来。  
+配置秘钥：  
 ```
-python3 upload.py app/my_captcha/images_data/JPEGImages/1_15463317590530567.jpg
-python3 upload.py text.jpg
+# 从环境变量获取密钥
+AccessKeyId = os.getenv("AccessKeyId")
+AccessKeySecret = os.getenv("AccessKeySecret")
+BucketName = os.getenv("BucketName")
+```
+上传图片：  
+```
+python3 extend/upload2oss.py app/my_captcha/images_data/JPEGImages/1_15463317590530567.jpg
+python3 extend/upload2oss.py text.jpg
 ```
 
-## GPU云推荐
+### 6.2 GPU云推荐
 使用租用 vectordash GPU云主机，ssh连接集成了Nvidia深度学习环境的ubuntu16.04系统  
 包含以下工具或框架：  
 ```
@@ -165,25 +198,26 @@ vectordash pull <instance_id> <from_path> <to_path>
 ```
 由于vectordash主机在国外，所以上传和下载都很慢，建议临时租用一台阿里云竞价突发型实例（约7分钱一小时）作为中转使用。  
 
-## 报错解决办法
+### 6.3 CPU和GPU识别速度对比
+GTX 1060, 识别耗时1s
+```
+[load model] speed time: 4.691879987716675s
+[detect image - i] speed time: 1.002530813217163s
+```
+CPU, 识别耗时13s
+```
+[load model] speed time: 3.313053846359253s
+[detect image - i] speed time: 13.256595849990845s
+```
+
+## 7. 报错解决办法
 1. UnicodeEncodeError: 'ascii' codec can't encode character '\U0001f621' in posit  
 [参考链接](https://blog.csdn.net/u011415481/article/details/80794567)  
 2. pip install, locale.Error: unsupported locale setting  
 [参考链接](https://blog.csdn.net/qq_33232071/article/details/51108062)  
 
-## TODO
-1. 支持多类别检测的识别和训练
-2. api调用
+## 8. TODO
+1. 支持多类别检测的识别和训练 **Done**
+2. WebServer API调用
 3. 分类器
 
-## CPU和GPU识别速度
-GTX 1060
-```
-[load model] speed time: 4.691879987716675s
-[detect image - i] speed time: 1.002530813217163s
-```
-CPU
-```
-[load model] speed time: 3.313053846359253s
-[detect image - i] speed time: 13.256595849990845s
-```
