@@ -216,7 +216,7 @@ CPU, 识别耗时13s
 2. pip install, locale.Error: unsupported locale setting  
 [参考链接](https://blog.csdn.net/qq_33232071/article/details/51108062)  
 
-## 8. TODO
+## TODO
 1. 支持多类别检测的识别和训练 **Done**
 2. WebServer API调用
 3. 分类器
