@@ -184,7 +184,13 @@ class DarknetRecognize(object):
 
         if result_type == "center":
             # 这里返回的是中心点加上边距的坐标
-            return res
+            new_res = list()
+            for res_ele in res:
+                res_ele = list(res_ele)
+                if isinstance(res_ele[0], bytes):
+                    res_ele[0] = res_ele[0].decode("utf-8")
+                new_res.append(res_ele)
+            return new_res
         else:
             # 这里返回的是box四个点的坐标
             boxes = self.calculation_boxes(res)

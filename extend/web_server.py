@@ -20,15 +20,20 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # 生成识别对象，需要配置参数
-app_name = "car"
-config_file = "app/{}/{}_train.yolov3.cfg".format(app_name, app_name)
-model_file = "app/{}/backup/{}_train.backup".format(app_name, app_name)
-data_config_file = "app/{}/{}.data".format(app_name, app_name)
+app_name = "car"  # 应用名称
+config_file = "app/{}/{}_train.yolov3.cfg".format(app_name, app_name)  # 配置文件路径
+model_file = "app/{}/backup/{}_train.backup".format(app_name, app_name)  # 模型路径
+data_config_file = "app/{}/{}.data".format(app_name, app_name)  # 数据配置文件路径
 dr = DarknetRecognize(
     config_file=config_file,
     model_file=model_file,
     data_config_file=data_config_file
 )
+save_path = "api_images"  # 保存图片的路径
+if not os.path.exists(save_path):
+    os.makedirs(save_path)
+else:
+    pass
 
 
 def response_headers(content):
@@ -44,8 +49,12 @@ def up_image():
         file = request.files.get('image_file')
         img = file.read()
 
+        img_path = "{}/{}.jpg".format(save_path, timec)
+        with open(img_path, "wb") as f:
+            f.write(img)
+
         s = time.time()
-        value = dr.detect(img, result_type="box")
+        value = dr.detect(img_path, result_type="center")
         e = time.time()
 
         print("识别结果: {}".format(value))

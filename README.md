@@ -4,7 +4,7 @@
 1. 提供两个目标检测（单分类和多分类）的例子，你可以通过例子熟悉定位yolo3定位网络的使用方式
 2. 基于darknet提供一系列API，用于使用自己的数据进行目标检测模型的训练
 
-![word](readme_file/word.jpg) ![word](readme_file/dummy_1300.jpg) ![word](readme_file/car.png)
+![word](readme_file/word.jpg) ![word](readme_file/dummy_1300.jpg) ![word](readme_file/car.png) ![word](readme_file/点选2.jpg)
 
 
 # 目录
@@ -12,6 +12,7 @@
 * [开始一个例子：单类型目标检测](#开始一个例子：单类型目标检测)
 * [第二个例子：多类型目标检测](#第二个例子：多类型目标检测)
 * [训练自己的数据](#训练自己的数据)
+* [Web服务](#web服务)
 * [API文档](#API文档)
 * [其他问题](#其他问题)  
   * [使用阿里云OSS加速下载](#使用阿里云OSS加速下载)  
@@ -176,9 +177,50 @@ python3 extend/output_label.py car 2
 # 识别测试
 python3 extend/rec.py car 100
 ```
-
+## web服务
+启动web服务：
+```
+python3 extend/web_server.py
+```
+启动前需要按需修改配置参数：
+```
+# 生成识别对象，需要配置参数
+app_name = "car"  # 应用名称
+config_file = "app/{}/{}_train.yolov3.cfg".format(app_name, app_name)  # 配置文件路径
+model_file = "app/{}/backup/{}_train.backup".format(app_name, app_name)  # 模型路径
+data_config_file = "app/{}/{}.data".format(app_name, app_name)  # 数据配置文件路径
+dr = DarknetRecognize(
+    config_file=config_file,
+    model_file=model_file,
+    data_config_file=data_config_file
+)
+save_path = "api_images"  # 保存图片的路径
+```
+使用下面的脚本`request_api.py`进行web服务的识别测试（注意修改图片路径）:
+```
+python3 extend/request_api.py
+```
+返回响应：
+```
+接口响应: {
+  "speed_time(ms)": 16469, 
+  "time": "15472704635706885", 
+  "value": [
+    [
+      "word", 
+      0.9995613694190979, 
+      [
+        214.47508239746094, 
+        105.97418212890625, 
+        24.86412811279297, 
+        33.40662384033203
+      ]
+    ],
+    ...
+}
+```
 ## API文档
-暂缺
+暂无
 
 ## 其他问题
 ### 使用阿里云OSS加速下载
