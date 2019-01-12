@@ -1,8 +1,10 @@
 # darknet_captcha
 项目基于darknet开发了一系列的快速启动脚本，旨在让图像识别新手或者开发人员能够快速的启动一个目标检测（定位）的项目。
+如果有没有讲清楚的地方，欢迎提issue和PR，希望能和大家共同完善！
+
 本项目分为两个部分：
-1. 提供两个目标检测（单分类和多分类）的例子，你可以通过例子熟悉定位yolo3定位网络的使用方式
-2. 基于darknet提供一系列API，用于使用自己的数据进行目标检测模型的训练
+1. 提供两个目标检测（**单分类和多分类点选验证码**）的例子，你可以通过例子熟悉定位yolo3定位网络的使用方式
+2. 基于darknet提供一系列API，用于使用**自己的数据**进行目标检测模型的训练，并提供web server的代码
 
 ![word](readme_file/word.jpg) ![word](readme_file/dummy_1300.jpg) ![word](readme_file/car.png) ![word](readme_file/点选2.jpg)
 
@@ -28,6 +30,7 @@
 3. app: 每一个新的识别需求都以app区分，其中包含配置文件、样本和标签文件等。
 
 # 开始一个例子：单类型目标检测
+**以点选验证码为例**
 darknet实际上给我们提供了一系列的深度学习算法，我们要做的就是使用比较简单的步骤来调用darknet训练我们的识别模型。  
 - 推荐使用的操作系统是`ubuntu`，遇到的坑会少很多。  
 - 如果使用windowns系统，需要先安装`cygwin`，便于编译darknet。（参考我的博客：[安装cygwin](https://blog.csdn.net/weixin_39198406/article/details/83020632)）  
@@ -132,7 +135,19 @@ python3 extend/rec.py my_captcha 100
 ![img1](readme_file/text_1000.jpg)  
 迭代1200次：
 ![img1](readme_file/text_1200.jpg)  
-
+#### 9.图片切割
+这部分比较简单，网上有很多示例代码，可以调用`darknet_interface.cut_and_save`方法把定位到的字符切割下来。  
+![img1](readme_file/word_0.jpg) ![img1](readme_file/word_1.jpg) ![img1](readme_file/word_2.jpg) 
+#### 10.分类器
+到分类这一步就比较容易了，可以使用darknet自带的分类器，也可以使用[cnn_captcha](https://github.com/nickliqian/cnn_captcha)一个使用卷积神经网络识别验证码的项目。
+#### 11.总结
+我们识别点选验证码的大致流程如下：  
+1. 搜集样本
+2. 打标签（标注坐标和字符）
+3. 训练定位器
+4. 检测位置，切割图片
+5. 训练分类器
+6. 使用定位器+分类器识别点选验证码上字符的位置和字符类别
 
 ## 第二个例子：多类型目标检测
 步骤和上面基本上一致，直接把命令列出来：
@@ -200,7 +215,7 @@ save_path = "api_images"  # 保存图片的路径
 ```
 python3 extend/request_api.py
 ```
-返回响应：
+返回响应，响应包含目标类别和中心点位置：
 ```
 接口响应: {
   "speed_time(ms)": 16469, 
@@ -287,6 +302,6 @@ CPU, 识别耗时13s
 
 ## TODO
 1. 支持多类别检测的识别和训练 **Done**
-2. WebServer API调用
+2. WebServer API调用  **Done**
 3. 分类器
 
