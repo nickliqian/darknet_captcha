@@ -79,13 +79,13 @@ sudo apt-get install python3-tk
 进入根目录，运行下面的程序生成一个应用的基本配置：  
 ```
 cd darknet_captcha
-python3 extend/generate_config_file.py my_captcha 1
+python3 extend/create_app_config.py my_captcha 1
 ```
 这里的类别默认生成`classes_1`，你可以修改类别名称；  
 打开`app/my_captcha/my_captcha.names`修改`classes_1`为主机想要的名称即可。
 
-如何查看`generate_config_file.py`的命令行参数解释？  
-直接运行`python generate_config_file.py`便可以在控制台查看，下面的程序也是如此。  
+如何查看`create_app_config.py`的命令行参数解释？  
+直接运行`python create_app_config.py`便可以在控制台查看，下面的程序也是如此。  
 
 >如果你对darknet相关配置有一定的了解，可以直接打开文件修改参数的值，这里我们保持原样即可。  
 
@@ -153,7 +153,7 @@ python3 extend/rec.py my_captcha 100
 步骤和上面基本上一致，直接把命令列出来：
 ```
 # 生成配置文件
-python3 extend/generate_config_file.py dummy_captcha 2
+python3 extend/create_app_config.py dummy_captcha 2
 # 生成图片
 python3 extend/generate_click_captcha.py dummy_captcha 500 True
 # 输出标签到txt
@@ -174,7 +174,7 @@ python3 extend/rec.py dummy_captcha 100
 给图片中的人和车分别打上person和car的标签，会生成xml标签文件。  
 接下来，我们创建一个应用，应用名称是`car`，类别为`2`类，同时生成一些配置文件：
 ```
-python3 extend/generate_config_file.py car 2
+python3 extend/create_app_config.py car 2
 ```
 然后把你的原始图片放到指定的路径`app/car/JPEGImages`，把xml标签文件放在`app/car/Annotations`  
 yolo训练的时候需要图片中目标的相对坐标，所以这里需要把xml的坐标计算为相对坐标的形式。  
